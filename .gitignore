@@ -1,0 +1,4 @@
+# Do not share inputs / samples
+# Reference: https://www.reddit.com/r/adventofcode/wiki/faqs/copyright/inputs/
+sample.txt
+input.txt
