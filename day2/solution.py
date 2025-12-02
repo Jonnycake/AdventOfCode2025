@@ -14,26 +14,41 @@ def get_numbers(input_file: str) -> Generator[int, None, None]:
                 for i in range(int(start), int(end) + 1):
                     yield i
 
+def is_invalid(number_str: str, part_length: int):
+    if part_length == 0:
+        return False
 
-def part1(input_file) -> int:
+    if len(number_str) % part_length != 0:
+        return False
+
+    num_parts = len(number_str) // part_length
+
+    return number_str == number_str[:part_length] * num_parts
+
+def part1(input_file: str) -> int:
     solution: int = 0
 
     for number in get_numbers(input_file):
         number_str = str(number)
 
         if len(number_str) % 2 != 0:
-            # Skip odd digit numbers
             continue
 
-        part_length = len(number_str) // 2
-
-        if number_str[:part_length] == number_str[part_length:]:
+        if is_invalid(number_str, len(number_str) // 2):
             solution += number
 
     return solution
 
-def part2(input_file) -> int:
+def part2(input_file: str) -> int:
     solution: int = 0
+
+    for number in get_numbers(input_file):
+        number_str = str(number)
+
+        for part_length in range(1, len(number_str) // 2 + 1):
+            if is_invalid(number_str, part_length):
+                solution += number
+                break
 
     return solution
 
