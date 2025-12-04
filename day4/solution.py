@@ -68,63 +68,21 @@ def solution_part1(input_file: str) -> int:
 def solution_part2(input_file: str) -> int:
     solution: int = 0
 
-    diagram = load_diagram(input_file)
-
-    height = len(diagram)
-    width = len(diagram[0])
-
     papers_removed = None
+    diagram = load_diagram(input_file)
 
     while papers_removed is None or papers_removed > 0:
         papers_removed = 0
 
-        for offset in range(width // 2):
-            top = offset
-            bottom = height - offset - 1
-            left = offset
-            right = width - offset - 1
-
-            # Top
-            for x in range(left, right + 1):
-                if diagram[top][x] != '@':
+        for y in range(len(diagram)):
+            for x in range(len(diagram[y])):
+                if diagram[y][x] != '@':
                     continue
 
-                if can_access(diagram, x, top):
+                if can_access(diagram, x, y):
                     solution += 1
                     papers_removed += 1
-                    diagram[top][x] = '-'
-
-            # Right
-            for y in range(top, bottom + 1):
-                if diagram[y][right] != '@':
-                    continue
-
-                if can_access(diagram, right, y):
-                    solution += 1
-                    papers_removed += 1
-                    diagram[y][right] = '-'
-
-
-            # Bottom
-            for x in range(right, left - 1, -1):
-                if diagram[bottom][x] != '@':
-                    continue
-
-                if can_access(diagram, x, bottom):
-                    solution += 1
-                    papers_removed += 1
-                    diagram[bottom][x] = '-'
-
-            # Left
-            for  y in range(bottom, top - 1, -1):
-                if diagram[y][left] != '@':
-                    continue
-
-                if can_access(diagram, left, y):
-                    solution += 1
-                    papers_removed += 1
-                    diagram[y][left] = '-'
-
+                    diagram[y][x] = '-'
 
     print_diagram(diagram)
     return solution
