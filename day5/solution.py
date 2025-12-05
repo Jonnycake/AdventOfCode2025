@@ -22,7 +22,7 @@ def get_ranges(input_file: str) -> list[tuple[int, int]]:
 
     # Sort and merge them off-the-bat
     merged_ranges: list[tuple[int, int]] = []
-    ranges = sorted(ranges, key=lambda v: v[0])
+    ranges = sorted(ranges)
 
     max_end = 0
     for i, ingredient_range in enumerate(ranges):
