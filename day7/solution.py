@@ -9,6 +9,12 @@
 # - Only a single particle goes through
 # - Time splits any time it hits a splitter
 # - Solution = how many active timelines there are
+#
+# Theory:
+# - We only need to track the x values and then track how many different
+#   timelines lead to a given point
+# - In the end we just sum up all of timelines that hit the various x
+#   positions in the end
 
 import sys
 import os
@@ -64,9 +70,28 @@ def solution_part1(input_file: str) -> int:
     return solution
 
 def solution_part2(input_file: str) -> int:
-    solution: int = 0
+    start, splitters, max_splitter_depth = get_positions(input_file)
+    y = start[1] + 1
+    x_values = {
+        start[0]: 1,
+    }
 
-    return solution
+    while y <= max_splitter_depth:
+        new_x_values = {}
+        for x, rays in x_values.items():
+            if (x, y) in splitters:
+                left = x - 1
+                right = x + 1
+                new_x_values[left] = new_x_values.get(left, 0) + rays
+                new_x_values[right] = new_x_values.get(right, 0) + rays
+            else:
+                new_x_values[x] = new_x_values.get(x, 0) + rays
+
+        x_values = new_x_values
+
+        y += 1
+
+    return sum(x_values.values())
 
 def main():
     if len(sys.argv) < 2:
